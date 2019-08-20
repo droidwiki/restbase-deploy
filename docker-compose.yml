@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  citoid:
+    image: droidwiki/citoid
+    ports:
+      - "172.16.0.2:1970:1970"
+    volumes:
+      - ./citoid/config.yml:/bin/config.yml
+
+  zotero:
+    image: zotero/translation-server
