@@ -12,10 +12,8 @@ services:
     image: zotero/translation-server
 
   parsoid:
-    image: thenets/parsoid:0.10
+    image: droidwiki/parsoid
     ports:
-      - "172.16.0.2:8142:8000"
+      - "172.16.0.2:8142:8142"
     volumes:
-      - ./parsoid/config.yml:/var/lib/parsoid/config.yaml
-    working_dir: /var/lib/parsoid
-    command: "su -c 'node bin/server.js' parsoid"
+      - ./parsoid/config.yml:/bin/config.yaml
