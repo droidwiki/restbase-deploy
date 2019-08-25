@@ -22,7 +22,7 @@ services:
       - citoid
       - parsoid
     ports:
-      - "172.16.0.2:7231:7231"
+      - "7231:7231"
     volumes:
       - ./restbase/config.yaml:/restbase/config.yaml
       - ./restbase/droidwiki.yaml:/restbase/projects/droidwiki.yaml
