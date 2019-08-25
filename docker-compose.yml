@@ -1,7 +1,16 @@
 version: '3'
 
+x-deploy: &deploy
+  stop_grace_period: 5s
+  deploy:
+    replicas: 2
+    update_config:
+      parallelism: 1
+      failure_action: rollback
+
 services:
   citoid:
+    <<: *deploy
     image: droidwiki/citoid
     depends_on:
       - zotero
@@ -9,14 +18,17 @@ services:
       - ./citoid/config.yml:/bin/config.yml
 
   zotero:
+    <<: *deploy
     image: zotero/translation-server
 
   parsoid:
+    <<: *deploy
     image: droidwiki/parsoid
     volumes:
       - ./parsoid/config.yml:/bin/config.yaml
 
   restbase:
+    <<: *deploy
     image: droidwiki/restbase
     depends_on:
       - citoid
