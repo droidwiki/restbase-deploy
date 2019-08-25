@@ -1,0 +1,55 @@
+resource_types:
+  - name: ssh-resource
+    type: docker-image
+    source:
+      test: test
+      repository: droidwiki/concourse-ssh-resource
+
+resources:
+  - name: restbase
+    type: git
+    source:
+      uri: https://github.com/droidwiki/restbase-deploy.git
+  - name: docker-manager
+    type: ssh-resource
+    source:
+      host: 188.68.49.74
+      user: ((ssh.username))
+      private_key: ((ssh.private_key))
+      timeout: 1800
+
+jobs:
+  - name: deploy
+    serial: true
+    plan:
+      - get: restbase
+      - put: docker-manager
+        params:
+          interpreter: /bin/bash
+          script: |
+            export TERM=dumb
+            set -e
+            ref="|restbase-ref|"
+
+            echo "((ssh.private_key))" > /tmp/ssh-key
+            chmod 600 /tmp/ssh-key
+            eval `ssh-agent -s`
+            ssh-add /tmp/ssh-key
+
+            cd /data/restbase
+
+            git fetch && git checkout $ref
+            docker stack deploy restbase -c docker-compose.yml
+          placeholders:
+            - name: "|restbase-ref|"
+              file: restbase/.git/ref
+        ensure:
+          put: docker-manager
+          params:
+            interpreter: /bin/bash
+            script: |
+              export TERM=dumb
+              set -e
+
+              rm -rf /tmp/ssh-key
+
