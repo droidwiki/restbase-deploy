@@ -2,7 +2,6 @@ resource_types:
   - name: ssh-resource
     type: docker-image
     source:
-      test: test
       repository: droidwiki/concourse-ssh-resource
 
 resources:
@@ -36,7 +35,7 @@ jobs:
             eval `ssh-agent -s`
             ssh-add /tmp/ssh-key
 
-            cd /data/restbase
+            cd /data/ha_volume/restbase
 
             git fetch && git checkout $ref
             docker stack deploy restbase -c docker-compose.yml
