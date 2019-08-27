@@ -6,9 +6,6 @@ RUN git clone https://github.com/wikimedia/restbase.git .
 
 RUN npm install
 
-# https://phabricator.wikimedia.org/T231135
-COPY ./patched_router.js /restbase/node_modules/hyperswitch/lib/router.js
-
 FROM node:alpine
 
 COPY --from=build /restbase /restbase
