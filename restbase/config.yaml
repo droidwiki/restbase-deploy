@@ -13,6 +13,8 @@ droidwiki: &droidwiki
                     host: http://parsoid:8000
                   citoid:
                     host: http://citoid:1970
+                  related:
+                    cache_control: s-maxage=86400, max-age=86400
                   purged_cache_control: s-maxage=0, max-age=86400
                   purged_cache_control_client_cache: s-maxage=0, max-age=300
               - path: projects/proxy.yaml

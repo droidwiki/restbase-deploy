@@ -19,6 +19,8 @@ paths:
         options:
           response_cache_control: '{{options.purged_cache_control}}'
       - path: v1/common_schemas.yaml # Doesn't really matter where to mount it.
+      - path: v1/related.js
+        options: '{{options.related}}'
   /transform:
     x-modules:
       - path: v1/transform.yaml
